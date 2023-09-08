@@ -90,7 +90,7 @@ The best model selected using these value of epochs and LR can be considered a g
 
 **Increase the “base_dense” parameter to 256 and compare the results with the case of “base_dense=64”. Is increasing the model capacity helpful to improve the model performance? Why?**
 
-The shape of the learning curve is very similar in the 2 cases considered but with an increase in the initial number of neurons in the network we obtain a lower loss and therefore a better model and performance.
+The shape of the learning curve is very similar in the 2 cases considered, without any meamingful improvement in the performance. We assume this is because the number of neurons is too high compared to the number of inputs and outputs.
 
 ![Learning curve with epochs = 150, LR = 0.0001 and 256 neurons](/Lab1/images/learning_curve150_0001_256.png)
 
