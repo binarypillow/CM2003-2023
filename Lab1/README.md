@@ -1,9 +1,9 @@
-# Report laboratory 1
-
 ---
 title: Report laboratory 1
-author: Alessia Egano, Simone Bonino
+author: Alessia Egano; Simone Bonino
 ---
+
+# Report laboratory 1
 
 ## Task 1
 
