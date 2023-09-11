@@ -1,12 +1,17 @@
 # Report laboratory 1
 
+---
+title: Report laboratory 1
+author: Alessia Egano, Simone Bonino
+---
+
 ## Task 1
 
-### Run the above code and interpret the results. Please note the output of the model is the prediction of class labels of each of the four points. If you run the code several times, will you observe the same results?
+**Run the above code and interpret the results. Please note the output of the model is the prediction of class labels of each of the four points. If you run the code several times, will you observe the same results?**
 
 No, the results change at each iteration.
 
-### Why?
+**Why?**
 
 The weights are initialized randomly with np.random.rand(), so the starting point is different at each run.
 Keep the parameter “n_unit=1” and increase the number of iterations starting from 10, 50, 100, 500, 2000, and compare the loss values. What can you conclude from increasing the number of iterations?
@@ -90,7 +95,7 @@ The best model selected using these value of epochs and LR can be considered a g
 
 **Increase the “base_dense” parameter to 256 and compare the results with the case of “base_dense=64”. Is increasing the model capacity helpful to improve the model performance? Why?**
 
-The shape of the learning curve is very similar in the 2 cases considered, without any meamingful improvement in the performance. We assume this is because the number of neurons is too high compared to the number of inputs and outputs.
+The shape of the learning curve is very similar in the 2 cases considered but with an increase in the initial number of neurons in the network we obtain a lower loss and therefore a better model and performance.
 
 ![Learning curve with epochs = 150, LR = 0.0001 and 256 neurons](/Lab1/images/learning_curve150_0001_256.png)
 
