@@ -1,9 +1,9 @@
+# Report laboratory 1
+
 ---
 title: Report laboratory 1
-author: Alessia Egano; Simone Bonino
+author: Alessia Egano, Simone Bonino
 ---
-
-# Report laboratory 1
 
 ## Task 1
 
@@ -14,8 +14,10 @@ No, the results change at each iteration.
 **Why?**
 
 The weights are initialized randomly with np.random.rand(), so the starting point is different at each run.
-Keep the parameter “n_unit=1” and increase the number of iterations starting from 10, 50, 100, 500, 2000, and compare the loss values. What can you conclude from increasing the number of iterations?
+
+**Keep the parameter “n_unit=1” and increase the number of iterations starting from 10, 50, 100, 500, 2000, and compare the loss values. What can you conclude from increasing the number of iterations?**
 The predictions improve (the loss values decrease) as the number of iterations increases (number of times the algorithm's parameters are updated).
+
 | Iterations | Lowest SSD
 |---------   |-----------
 |10          |0.81
@@ -26,7 +28,8 @@ The predictions improve (the loss values decrease) as the number of iterations i
 
 **Now, with a fixed value of “iterations =1000”, increase the parameter “n_unit” to 2, 5, 10 and interpret the results.**
 
-The predictions improve (the loss values decrease) as the number of neurons increases. The lowest SSD is reached with iterations = 1000 and n_unit = 10; however, the degree of improvement is small after 5 neurons as it can be seen by comparing the difference between the last two lowest SSD values. This consideration confirms the rule of thumb: “the number of hidden neurons should be between the size of the input layer and the size of the output layer”.
+The predictions improve (the loss values decrease) as the number of neurons increases. The lowest SSD is reached with iterations = 1000 and n_unit = 10; however, the degree of improvement is small after 5 neurons as it can be seen by comparing the difference between the last two lowest SSD values. 
+
 | Neurons | Lowest SSD
 |---------|-----------
 |1        |0.255463
@@ -59,7 +62,7 @@ The lowest SSD is reached with iterations = 2000 and n_unit = 10.
 
 **Why?**
 
-As in task 1, the performance is equally good both for n_unit = 5 and 10 but, according to the rule of thumb, the SSD increases drastically if the number of neurons is too high compared to the size of input and output layers.
+As in task 1, the performance is equally good both for n_unit = 5 and 10 but, the SSD increases drastically if the number of neurons is too high compared to the size of input and output layers.
 
 ## Task 3
 
@@ -76,28 +79,30 @@ The results show improvement in the prediction when n_unit = 10 is used. Moreove
 
 **How do you interpret the observed values of loss and accuracy values? Is the number of epochs enough to make a good decision about model performance?**
 
-The best model is reached at the end of the model fitting process after 50 epochs with loss = 0.67 and accuracy =
-Based on the trend of the learning curve, we can conclude that the number of epochs is not enough to make a decision about the model since the loss value is doesn't stabilize at the end but keeps decreasing, suggesting the possibility of an even better model with lower loss.
+The best model is reached at the end of the model fitting process after 50 epochs with loss = 0.683 and accuracy = 0.671.
+
+Based on the trend of the learning curve, we can conclude that the number of epochs is not enough to make a decision about the model since the loss value doesn't stabilize at the end, but keeps decreasing, suggesting the possibility of an even better model with lower loss.
 
 ![Learning curve with epochs = 50 and LR = 0.0001](/Lab1/images/learning_curve50_0001.png)
-
+![Accuracy curve with epochs = 50 and LR = 0.0001](/Lab1/images/accuracy_curve50_0001.png)
 **For the same number of epochs, reduce the learning rate parameter to 0.1 and interpret the results.**
 
-By increasing the learning rate parameter, the learning curve stabilizes around loss = 0.7 after the first few epochs. We can assume that this learning rate parameter value is too high to perform a good selection of the best model.
+By increasing the learning rate parameter, the learning curve stabilizes around loss = 0.7 after the first few epochs. We can assume that this learning rate value is too high to perform a good selection of the best model.
 
 ![Learning curve with epochs = 150 and LR = 0.1](/Lab1/images/learning_curve50_1.png)
-
+![Accuracy curve with epochs = 150 and LR = 0.1](/Lab1/images/accuracy_curve50_1.png)
 **Now increase the number of epochs to 150 with LR=0.0001. Does this model have enough capacity to yield acceptable results?**
 
-The best model selected using these value of epochs and LR can be considered a good model given the trend of the learning curve that tend to stabilize itself around loss = 0.64
+The best model selected using these value of epochs and LR can be considered a good model given the trend of the learning curve that tend to stabilize itself around loss = 0.64.
 
 ![Learning curve with epochs = 150 and LR = 0.0001](/Lab1/images/learning_curve150_0001.png)
-
+![Accuracy curve with epochs = 150 and LR = 0.0001](/Lab1/images/accuracy_curve150_0001.png)
 **Increase the “base_dense” parameter to 256 and compare the results with the case of “base_dense=64”. Is increasing the model capacity helpful to improve the model performance? Why?**
 
 The shape of the learning curve is very similar in the 2 cases considered but with an increase in the initial number of neurons in the network we obtain a lower loss and therefore a better model and performance.
 
 ![Learning curve with epochs = 150, LR = 0.0001 and 256 neurons](/Lab1/images/learning_curve150_0001_256.png)
+![Accuracy curve with epochs = 150, LR = 0.0001 and 256 neurons](/Lab1/images/accuracy_curve150_0001_256.png)
 
 The table below reports the val loss of the best model selected as the one with the lowest val loss in the learning curve. The val accuracy is not the maximum value, but the one corrisponding to the epoch with the lowest val loss (best model).
 
