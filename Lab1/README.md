@@ -85,18 +85,21 @@ Based on the trend of the learning curve, we can conclude that the number of epo
 
 ![Learning curve with epochs = 50 and LR = 0.0001](/Lab1/images/learning_curve50_0001.png)
 ![Accuracy curve with epochs = 50 and LR = 0.0001](/Lab1/images/accuracy_curve50_0001.png)
+
 **For the same number of epochs, reduce the learning rate parameter to 0.1 and interpret the results.**
 
 By increasing the learning rate parameter, the learning curve stabilizes around loss = 0.7 after the first few epochs. We can assume that this learning rate value is too high to perform a good selection of the best model.
 
 ![Learning curve with epochs = 150 and LR = 0.1](/Lab1/images/learning_curve50_1.png)
 ![Accuracy curve with epochs = 150 and LR = 0.1](/Lab1/images/accuracy_curve50_1.png)
+
 **Now increase the number of epochs to 150 with LR=0.0001. Does this model have enough capacity to yield acceptable results?**
 
 The best model selected using these value of epochs and LR can be considered a good model given the trend of the learning curve that tend to stabilize itself around loss = 0.64.
 
 ![Learning curve with epochs = 150 and LR = 0.0001](/Lab1/images/learning_curve150_0001.png)
 ![Accuracy curve with epochs = 150 and LR = 0.0001](/Lab1/images/accuracy_curve150_0001.png)
+
 **Increase the “base_dense” parameter to 256 and compare the results with the case of “base_dense=64”. Is increasing the model capacity helpful to improve the model performance? Why?**
 
 The shape of the learning curve is very similar in the 2 cases considered but with an increase in the initial number of neurons in the network we obtain a lower loss and therefore a better model and performance.
