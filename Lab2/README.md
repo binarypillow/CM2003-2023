@@ -120,7 +120,7 @@ The introduction of the drop out layers is able to resolve the overfitting probl
 
 **Increase the number of epochs to 150. How do you explain the effect of increasing the number of epochs?**
 
-The increase in the number of epochs leads to a worse model which is more similar in terms of accuracy and learning curve trends to the ones without the drop out layer, in which the overfitting is greater. 
+The increase in the number of epochs leads to a worse model which is more similar in terms of accuracy and learning curve trends to the ones without the drop out layer, in which the overfitting is greater
 
 The number of epochs is an important parameter that can lead to overfitting when it's set too high: the model becomes too speciliazed in predicting the training set and it's not able to predict well new data
 
@@ -135,11 +135,13 @@ The number of epochs is an important parameter that can lead to overfitting when
 The change in the learning rate results in better models with higher accuracy, lower loss value and less overfitting. Notice that the model with the higher number of epochs for training still shows better results for the training set than the validation set, expecially for the loss value. We can assume by looking at the curves that the model with epochs = 150 is the better one since the curves for training and validation sets are much more similar, suggesting that higher numbers (epochs = 350) tends to overfit the model.
 
 *epochs = 150*
+
 ![Learning curve with batch size = 8, epochs = 150, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/learning_curve8_150_000001.png)
 
 ![Accuracy curve with batch size = 8, epochs = 150, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/accuracy_curve8_150_000001.png)
 
 *epochs = 350*
+
 ![Learning curve with batch size = 8, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/learning_curve8_350_000001.png)
 
 ![Accuracy curve with batch size = 8, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/accuracy_curve8_350_000001.png)
@@ -151,16 +153,19 @@ The change in the learning rate results in better models with higher accuracy, l
 By increasing the number of batch, the model becomes better at predicting the validation set and the efficiency of the algorithm improves.
 
 *batch size = 2*
+
 ![Learning curve with batch size = 2, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/learning_curve8_150_000001_2.png)
 
 ![Accuracy curve with batch size = 2, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/accuracy_curve8_150_000001_2.png)
 
 *batch size = 4*
+
 ![Learning curve with batch size = 4, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/learning_curve8_150_000001_4.png)
 
 ![Accuracy curve with batch size = 4, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/accuracy_curve8_150_000001_4.png)
 
 *batch size = 8*
+
 ![Learning curve with batch size = 4, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/learning_curve8_150_000001.png)
 
 ![Accuracy curve with batch size = 4, epochs = 350, n_base(Base) = 8, learning rate = 1e-5 and Adam as optimizer](/Lab2/images/task6/accuracy_curve8_150_000001.png)
