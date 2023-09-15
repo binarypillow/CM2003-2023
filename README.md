@@ -5,10 +5,9 @@
 
 Repository of Group_3 projects.
 
-## Reports index
-
+### Reports index
 - [Lab1](/Lab1/README.md)
-- Lab2
+- [Lab2](/Lab2/README.md)
 - Lab3
 - Lab4
 - Lab5
