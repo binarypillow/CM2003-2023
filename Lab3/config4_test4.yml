@@ -1,0 +1,27 @@
+---
+task_name: "task4"
+iter_name: "_test4_L"
+load_weights_history: False
+data_path: Lab1/X_ray/
+use_preloaded_data: True
+data:
+  img_ch: 1
+  img_w: 128
+  img_h: 128
+net:
+  net_model: LeNet
+  base: 8
+  base_dense_1: 64
+  base_dense_2: 0
+  normalization: False
+  spatial_drop: False
+  spatial_drop_rate: 0
+  loss: BCE 
+  optimizer: Adam  
+  metrics: binary_accuracy
+  n_epoch: 100
+  batch_s: 8
+  learning_rate: 0.000001
+  dropout: False
+  dropout_rate: 0.2
+  output_layers: 9
