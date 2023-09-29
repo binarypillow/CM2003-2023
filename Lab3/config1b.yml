@@ -1,0 +1,23 @@
+---
+task_name: "task1b"
+iter_name: "_06"
+load_weights_history: False
+data_path: Lab1/Skin/
+use_preloaded_data: True
+data:
+  img_ch: 1
+  img_w: 128
+  img_h: 128
+net:
+  net_model: VGG16
+  base: 8
+  base_dense_1: 64
+  loss: BinaryCrossentropy 
+  optimizer: Adam  
+  metrics: binary_accuracy
+  n_epoch: 100
+  batch_s: 8
+  learning_rate: 0.000001
+  dropout: False
+  dropout_rate: 0.2
+  output_layers: 1
