@@ -1,0 +1,40 @@
+---
+task_name: "task4"
+iter_name: "_c_a"
+load_weights_history: False
+data_path: Lab3/X_ray/
+img_data_path: Lab3/X_ray/Image/
+mask_data_path: Lab3/X_ray/Mask/
+sample: Im1.jpg
+use_augmentation: False
+data:
+  img_ch: 3
+  img_w: 256
+  img_h: 256
+generator:
+  rescale: 1./255
+  rotation_range:  0 #10
+  width_shift_range: 0 # 0.1
+  height_shift_range: 0 # height_shift_range,
+  zoom_range: 0
+  horizontal_flip: False
+  batch_s: 8
+  color_mode: 'grayscale'
+  class_mode:
+  shuffle: True
+  seed: 313
+net:
+  net_model: UNet
+  base: 8
+  loss: BCE
+  optimizer: Adam  
+  metrics: dice_coeff
+  n_epoch: 150
+  batch_s: 8
+  learning_rate: 0.0001
+  dropout: True
+  dropout_rate: 0.2
+  normalization: False
+  output_layers: 1
+  step_per_epoch: 10
+  validation_step: 10
