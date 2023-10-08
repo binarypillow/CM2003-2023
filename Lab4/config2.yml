@@ -1,0 +1,28 @@
+---
+task_name: "task2"
+iter_name: "_skin" # _bone
+load_weights_history: False
+training_data_path: Lab2/Skin/train/ # Lab2/Bone/train/
+validation_data_path: Lab2/Skin/validation/ # Lab2/Bone/validation/
+data:
+  img_ch: 3
+  img_w: 224
+  img_h: 224
+  cat1: Mel # AFF
+  cat2: Nevi # NFF
+generator:
+  rescale: 1./255
+  batch_s: 8
+  class_mode: binary 
+  shuffle: False
+net:
+  net_model: "MLP"
+  base_dense_1: 128
+  loss: BinaryCrossentropy 
+  optimizer: Adam  
+  metrics: binary_accuracy
+  n_epoch: 150  
+  batch_s: 8
+  learning_rate: 0.00001
+  dropout_rate: 0.5
+  output_layers: 1

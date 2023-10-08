@@ -1,0 +1,29 @@
+---
+task_name: "task3"
+iter_name: ""
+load_weights_history: True
+training_data_path: Lab2/Bone/train/
+validation_data_path: Lab2/Bone/validation/
+sample_path: Lab2/Bone/train/AFF/14.jpg
+data:
+  img_ch: 3
+  img_w: 128
+  img_h: 128
+generator:
+  rescale: 1./255
+  batch_s: 8
+  class_mode: categorical 
+  shuffle: True
+net:
+  net_model: VGG16_cat
+  base: 8
+  base_dense_1: 64
+  loss: CategoricalCrossentropy 
+  optimizer: Adam  
+  metrics: categorical_accuracy
+  n_epoch: 80  
+  batch_s: 8
+  learning_rate: 0.00001
+  dropout: True
+  dropout_rate: 0.4
+  output_layers: 2
