@@ -3,6 +3,7 @@ import numpy as np
 from random import shuffle
 from skimage.io import imread
 from skimage.transform import resize
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 def gen_labels(im_name, pats):
@@ -149,6 +150,7 @@ def loadData(img_w, img_h, rel_path):
     y_test : Numpy array
     """
     data_path = "/home/group_3/Data/" + rel_path  # Path to data root with two subdirs.
+
     train_data_path = os.path.join(data_path, "train")
     test_data_path = os.path.join(data_path, "test")
     train_list = os.listdir(train_data_path)
@@ -159,7 +161,150 @@ def loadData(img_w, img_h, rel_path):
     return x_train, x_test, y_train, y_test
 
 
-def get_length(Path, Pattern):
-    # Pattern: name of the subdirectory
-    Length = len(os.listdir(os.path.join(Path, Pattern)))
-    return Length
+def get_length(path, subdir):
+    """Get the absolute path of a subdirectory
+
+    Args:
+        path (string): path of the main directory
+        subdir (string): name of the subfolder
+
+    Returns:
+        string: absolute path
+    """
+    length = len(os.listdir(os.path.join(path, subdir)))
+    return length
+
+
+def generateData(
+    training_data_path,
+    target_size,
+    batch_size,
+    class_mode,
+    color_mode="rgb",
+    classes=None,
+    shuffle=True,
+    rescale=None,
+    rotation_range=0,
+    width_shift_range=0.0,
+    height_shift_range=0.0,
+    validation_split=0.0,
+    horizontal_flip=False,
+    zoom_range=0.0,
+    subset=None,
+    seed=None,
+):
+    """Generate data using Tensorflow ImageDataGenerator.
+
+    Args:
+        scale(int): if None or 0, no rescaling is applied, otherwise we multiply the data by the value provided.
+        training_data_path (string): path to the target directory.
+        target_size (tuple): list with image width and height as entries.
+        batch_size (int): size of the batches of data.
+        class_mode (string): one of "categorical", "binary", "sparse", "input", or None.
+        color_mode (string): one of "rgb", "grayscale". Default to "rgb
+        classes (list): optional list of class subdirectories.
+        shuffle (bool): if False, sorts the data in alphanumeric order. Defaults to True.
+        validation_split (float): fraction of images reserved for validation (strictly between 0 and 1).
+        horizontal_flip (bool): randomly flip inputs horizontally.
+        zoom_range (float): range for random zoom.
+        subset (string): subset of data ("training" or "validation") if validation_split is set in ImageDataGenerator.
+        seed (int): optional random seed for shuffling and transformations.
+
+    Returns:
+        object: tensorflow data generator.
+    """
+    datagen = ImageDataGenerator(
+        rescale=rescale,
+        rotation_range=rotation_range,
+        width_shift_range=width_shift_range,
+        height_shift_range=height_shift_range,
+        zoom_range=zoom_range,
+        validation_split=validation_split,
+        horizontal_flip=horizontal_flip,
+    )
+    generator = datagen.flow_from_directory(
+        training_data_path,
+        target_size=target_size,
+        batch_size=batch_size,
+        color_mode=color_mode,
+        class_mode=class_mode,
+        classes=classes,
+        shuffle=shuffle,
+        subset=subset,
+        seed=seed,
+    )
+
+    return generator
+
+
+def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path):
+    """Load data for segmentation (no classes)
+
+    Args:
+        img_w (int): the image weight.
+        img_h (int): the image height.
+        img_ch (int): the image channels.
+        img_data_path (string): path to images directory.
+        mask_data_path (string): path to masks directory.
+
+    Returns:
+        nparray: two nparray with loaded images and masks.
+    """
+    img_list = os.listdir(img_data_path)
+    mask_list = os.listdir(mask_data_path)
+
+    images = []
+    masks = []
+    print(f"Found {len(img_list)} images and {len(mask_list)} masks!")
+    print("Reading...")
+
+    for img_name, mask_name in zip(img_list, mask_list):
+        img = imread(os.path.join(img_data_path, img_name))
+        img = resize(img, (img_h, img_w, img_ch), anti_aliasing=True).astype("float32")
+        img = np.divide(img.astype(np.float32), 255.0)
+        mask = imread(os.path.join(mask_data_path, mask_name))
+        mask = resize(mask, (img_h, img_w, 1), anti_aliasing=True).astype("float32")
+        mask = np.divide(mask.astype(np.float32), 255.0)
+
+        images.append(img)
+        masks.append(mask)
+
+    print("DONE! :D")
+    return np.array(images), np.array(masks)
+
+
+def loadDataSeg1(img_w, img_h, img_ch, img_data_path, mask_data_path):
+    """Load data for segmentation (no classes)
+
+    Args:
+        img_w (int): the image weight.
+        img_h (int): the image height.
+        img_ch (int): the image channels.
+        img_data_path (string): path to images directory.
+        mask_data_path (string): path to masks directory.
+
+    Returns:
+        nparray: two nparray with loaded images and masks.
+    """
+    img_list = os.listdir(img_data_path)
+    mask_list = os.listdir(mask_data_path)
+
+    images = []
+    masks = []
+    print(f"Found {len(img_list)} images and {len(mask_list)} masks!")
+    print("Reading...")
+
+    for img_name in img_list:
+        img = imread(os.path.join(img_data_path, img_name))
+        img = np.divide(img.astype(np.float32), 255.0)
+        img = resize(img, (img_h, img_w, img_ch), anti_aliasing=True).astype("float32")
+
+        mask = imread(os.path.join(mask_data_path, img_name))
+        mask = np.divide(mask.astype(np.float32), 255.0)
+        mask = resize(mask, (img_h, img_w, 1), anti_aliasing=True).astype("float32")
+
+        images.append(img)
+        masks.append(mask)
+
+    print("DONE! :D")
+    return np.array(images), np.array(masks)
