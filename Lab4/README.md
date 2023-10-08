@@ -41,8 +41,11 @@ To test of the results are reliable we should apply the model for prediction on 
 
 ![Learing curve and accuracy - Task 3](/Lab4/results/task3/loss-accuracy.png)
 *Original sample image*
+
 ![Original image - Task 3](/Lab4/results/task3/activation_maps.png)
+
 *Activation map of sample image*
+
 ![Superimposed activation map - Task 3](/Lab4/results/task3/superimposed_activation_maps.png)
 
 |Accuracy  |Loss      |
