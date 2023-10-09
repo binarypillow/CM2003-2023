@@ -175,6 +175,11 @@ def get_length(path, subdir):
     return length
 
 
+def binary(image):
+    image[image != 0] = 255.0
+    return image
+
+
 def generateData(
     training_data_path,
     target_size,
@@ -192,6 +197,7 @@ def generateData(
     zoom_range=0.0,
     subset=None,
     seed=None,
+    binary=False,
 ):
     """Generate data using Tensorflow ImageDataGenerator.
 
@@ -209,10 +215,17 @@ def generateData(
         zoom_range (float): range for random zoom.
         subset (string): subset of data ("training" or "validation") if validation_split is set in ImageDataGenerator.
         seed (int): optional random seed for shuffling and transformations.
+        binary (bool, optional): if True, binarize the loaded masks.
+
 
     Returns:
         object: tensorflow data generator.
     """
+    if binary:
+        preprocessing_function = binary()
+    else:
+        preprocessing_function = None
+
     datagen = ImageDataGenerator(
         rescale=rescale,
         rotation_range=rotation_range,
@@ -221,6 +234,7 @@ def generateData(
         zoom_range=zoom_range,
         validation_split=validation_split,
         horizontal_flip=horizontal_flip,
+        preprocessing_function=preprocessing_function,
     )
     generator = datagen.flow_from_directory(
         training_data_path,
@@ -237,7 +251,7 @@ def generateData(
     return generator
 
 
-def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path):
+def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path, binary=False):
     """Load data for segmentation (no classes)
 
     Args:
@@ -246,6 +260,7 @@ def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path):
         img_ch (int): the image channels.
         img_data_path (string): path to images directory.
         mask_data_path (string): path to masks directory.
+        binary (bool, optional): if True, binarize the loaded masks
 
     Returns:
         nparray: two nparray with loaded images and masks.
@@ -260,11 +275,13 @@ def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path):
 
     for img_name, mask_name in zip(img_list, mask_list):
         img = imread(os.path.join(img_data_path, img_name))
-        img = resize(img, (img_h, img_w, img_ch), anti_aliasing=True).astype("float32")
         img = np.divide(img.astype(np.float32), 255.0)
+        img = resize(img, (img_h, img_w, img_ch), anti_aliasing=True).astype("float32")
         mask = imread(os.path.join(mask_data_path, mask_name))
-        mask = resize(mask, (img_h, img_w, 1), anti_aliasing=True).astype("float32")
+        if binary:
+            mask[mask != 0] = 255.0
         mask = np.divide(mask.astype(np.float32), 255.0)
+        mask = resize(mask, (img_h, img_w, 1), anti_aliasing=True).astype("float32")
 
         images.append(img)
         masks.append(mask)
