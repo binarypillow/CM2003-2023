@@ -46,7 +46,7 @@ else:
 
 # Loading of data
 if not use_augmentation:
-    images, masks = DataLoader.loadDataSeg1(
+    images, masks = DataLoader.loadDataSeg(
         img_w, img_h, img_ch, img_data_path, mask_data_path
     )
     x_train, x_test, y_train, y_test = train_test_split(
