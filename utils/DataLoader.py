@@ -265,8 +265,8 @@ def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path, binary=Fals
     Returns:
         nparray: two nparray with loaded images and masks.
     """
-    img_list = os.listdir(img_data_path)
-    mask_list = os.listdir(mask_data_path)
+    img_list = sorted(os.listdir(img_data_path))
+    mask_list = sorted(os.listdir(mask_data_path))
 
     images = []
     masks = []
