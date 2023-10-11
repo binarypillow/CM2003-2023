@@ -1,0 +1,42 @@
+---
+task_name: "task1"
+iter_name: "_b"
+load_weights_history: True
+load_data: False
+data_path: Lab3/CT/
+img_data_path: Lab3/CT/Image/
+mask_data_path: Lab3/CT/Mask/
+sample: Im0_64.png
+use_augmentation: True
+binary: True
+data:
+  img_ch: 3
+  img_w: 256
+  img_h: 256
+generator:
+  rescale: 1./255
+  rotation_range:  10 
+  width_shift_range: 0.1
+  height_shift_range: 0.1
+  zoom_range: 0.2
+  horizontal_flip: True
+  batch_s: 8
+  color_mode: 'grayscale'
+  class_mode: 
+  shuffle: True
+  seed: 313
+net:
+  net_model: UNet
+  base: 8
+  loss: dice_loss
+  optimizer: Adam  
+  metrics: [dice_coeff, Precision, Recall]
+  n_epoch: 50
+  batch_s: 8
+  learning_rate: 0.0001
+  dropout: True
+  dropout_rate: 0.2
+  normalization: True
+  output_layers: 1
+  step_per_epoch: 10
+  validation_step: 10
