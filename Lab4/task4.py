@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
 
 sys.path.append("../")
-from utils import Models, DataLoader, CompileFit, Plots
+from utils import Models, DataLoader, CompileFit, Plots, LossMetrics
 
 with open(sys.argv[1], "r") as ymlfile:
     config = yaml.safe_load(ymlfile)
@@ -35,12 +35,12 @@ net = config["net"]
 generator = config["generator"]
 
 if net["loss"] == "dice_loss":
-    loss = [CompileFit.dice_loss]
+    loss = [LossMetrics.dice_loss]
 else:
     loss = net["loss"]
 
 if net["metrics"] == "dice_coeff":
-    metrics = [CompileFit.dice_coeff]
+    metrics = [LossMetrics.dice_coeff]
 else:
     metrics = net["metrics"]
 
