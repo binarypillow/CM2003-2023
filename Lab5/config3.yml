@@ -1,0 +1,29 @@
+---
+task_name: "task3"
+iter_name: ""
+load_weights_history: False
+load_data: True
+data_path: Lab3/MRI/
+img_data_path: Lab3/MRI/Image/
+mask_data_path: Lab3/MRI/Mask/
+sample: Brats17_2013_10_1_t1ce_32.png
+n_folds: 3
+num_ctx_iterations: 1
+binary: True
+data:
+  img_ch: 3
+  img_w: 240
+  img_h: 240
+net:
+  net_model: UNet
+  base: 8
+  loss: dice_loss
+  optimizer: Adam  
+  metrics: [dice_coeff, Precision, Recall]
+  n_epoch: 120
+  batch_s: 8
+  learning_rate: 0.0001
+  dropout: True
+  dropout_rate: 0.2
+  normalization: True
+  output_layers: 1
