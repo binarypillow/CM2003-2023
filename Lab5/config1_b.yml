@@ -1,7 +1,7 @@
 ---
 task_name: "task1"
 iter_name: "_b"
-load_weights_history: True
+load_weights_history: False
 load_data: False
 data_path: Lab3/CT/
 img_data_path: Lab3/CT/Image/
@@ -38,5 +38,5 @@ net:
   dropout_rate: 0.2
   normalization: True
   output_layers: 1
-  step_per_epoch: 10
-  validation_step: 10
+  step_per_epoch: 500
+  validation_step: 200
