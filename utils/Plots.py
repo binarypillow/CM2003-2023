@@ -20,7 +20,7 @@ def plotLossAccuracy(history, task_name="", iter_name="", metric=""):
         history (object): the history object of the trained model
         task_name (str, optional): the folder in which the results are saved. If left blank, the image is only shown. Defaults to "".
         iter_name (str, optional): an optional extention to the default file name. Defaults to "".
-        metric (str, optional): the metric function to use. Defaults to "binary_accuracy.
+        metric (str, optional): the metric function to use. Defaults to "binary_accuracy".
     """
 
     fig, (ax1, ax2) = plt.subplots(2)
@@ -43,16 +43,14 @@ def plotLossAccuracy(history, task_name="", iter_name="", metric=""):
     ax1.legend()
 
     # Plot accuracy
-
     if metric == "":
         param = "binary_accuracy"
         ax2.set_title("Accuracy")
         ax2.set_ylabel("Accuracy")
     else:
-        param = metric
+        param = metric[0]
         ax2.set_title(metric)
         ax2.set_ylabel(metric)
-
     ax2.plot(history[param], label="Train")
     ax2.plot(history["val_" + param], label="Validation")
 
@@ -252,6 +250,8 @@ def plotSegmentation(
     img_ch,
     task_name="",
     iter_name="",
+    binary=False,
+    output_layers=1,
 ):
     """Compare ground truth segmentation with predicted one with a graph.
 
@@ -264,22 +264,25 @@ def plotSegmentation(
         img_ch (int): the image channels.
         task_name (str, optional): the folder in which the results are saved. If left blank, the image is only shown. Defaults to "".
         iter_name (str, optional): an optional extention to the default file name. Defaults to "".
+        binary (bool, optional): if True, binarize the loaded masks.
     """
     img = imread(sample_img_path)
     img = np.divide(img.astype(np.float32), 255.0)
     img = resize(img, (img_h, img_w, img_ch), anti_aliasing=True).astype("float32")
 
     mask = imread(sample_mask_path)
+    if binary:
+        mask[mask != 0] = 255.0
     mask = np.divide(mask.astype(np.float32), 255.0)
     mask = resize(mask, (img_h, img_w, 1), anti_aliasing=True).astype("float32")
 
     pred = model.predict(np.expand_dims(img, axis=0))
     pred = pred[0]
 
-    """
-    prediction = model.predict(img[tf.newaxis, ...])[0]
-    pred = (prediction > 0.5).astype(np.uint8)
-    """
+    if output_layers != 1:
+        pred = np.argmax(pred, axis=2)
+        pred = np.divide(pred.astype(np.float32), 2)
+        # pred = np.expand_dims(pred, axis=2)
 
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(12, 3))
 

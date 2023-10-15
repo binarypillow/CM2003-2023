@@ -413,10 +413,10 @@ def UNet(
     img_height,
     base,
     output_layers,
-    depth=4,
     dropout=False,
     dropout_rate=0.2,
     normalization=False,
+    auto_context=False,
 ):
     """Create a U-Net model.
 
@@ -428,15 +428,17 @@ def UNet(
         output_layers (int, optional): the number of neurons in a output layer. Defaults to 1.
         dropout_rate (float, optional): the rate of the dropout layers. Defaults to 0.2.
         dropout (bool, optional): if True dropout layers are added after each dense layer. Defaults to False.
+        get_weights (bool, optional): if True retuns weights for weighted loss. Default to False
 
     Returns:
         object: the U-Net model
     """
 
     inputs = Input(shape=(img_width, img_height, img_ch))
+    if auto_context:
+        autocontext_input = Input(shape=(img_width, img_height, img_ch + 1))
 
     # Contraction path
-
     e1, l1 = encode(inputs, base, dropout, dropout_rate, normalization)
     e2, l2 = encode(e1, base * 2, dropout, dropout_rate, normalization)
     e3, l3 = encode(e2, base * 4, dropout, dropout_rate, normalization)
@@ -468,9 +470,21 @@ def UNet(
             activation="softmax",
         )(d4)
 
-    model = Model(inputs, outputs, name="U-Net")
-
-    return model
+    """
+    if get_weights:
+        weight_map = Input(shape=(img_width, img_height, 1), name="weight_map")
+        model = Model([inputs, weight_map], outputs=outputs)
+        return model, weight_map
+    else:
+        model = Model(inputs, outputs=outputs)
+        return model
+    """
+    if auto_context:
+        model = Model(inputs=[inputs, autocontext_input], outputs=outputs)
+        return model
+    else:
+        model = Model(inputs, outputs=outputs)
+        return model
 
 
 # costum MLP model

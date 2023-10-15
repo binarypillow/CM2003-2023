@@ -4,6 +4,7 @@ from random import shuffle
 from skimage.io import imread
 from skimage.transform import resize
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import to_categorical
 
 
 def gen_labels(im_name, pats):
@@ -175,8 +176,16 @@ def get_length(path, subdir):
     return length
 
 
-def binary(image):
+def make_binary(image):
     image[image != 0] = 255.0
+    return image
+
+
+def make_multiclass(image):
+    image[image < 0.33 * 255] = 0
+    image[image >= 0.66 * 255] = 255
+    image[((0.33 * 255 <= image) & (image < 0.66 * 255)).all()] = 255 / 2
+
     return image
 
 
@@ -198,6 +207,7 @@ def generateData(
     subset=None,
     seed=None,
     binary=False,
+    multiclass=False,
 ):
     """Generate data using Tensorflow ImageDataGenerator.
 
@@ -222,7 +232,9 @@ def generateData(
         object: tensorflow data generator.
     """
     if binary:
-        preprocessing_function = binary()
+        preprocessing_function = make_binary
+    elif multiclass:
+        preprocessing_function = make_multiclass
     else:
         preprocessing_function = None
 
@@ -251,7 +263,7 @@ def generateData(
     return generator
 
 
-def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path, binary=False):
+def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path, binary=True):
     """Load data for segmentation (no classes)
 
     Args:
@@ -273,15 +285,30 @@ def loadDataSeg(img_w, img_h, img_ch, img_data_path, mask_data_path, binary=Fals
     print(f"Found {len(img_list)} images and {len(mask_list)} masks!")
     print("Reading...")
 
+    i = 0
     for img_name, mask_name in zip(img_list, mask_list):
+        i += 1
         img = imread(os.path.join(img_data_path, img_name))
         img = np.divide(img.astype(np.float32), 255.0)
         img = resize(img, (img_h, img_w, img_ch), anti_aliasing=True).astype("float32")
         mask = imread(os.path.join(mask_data_path, mask_name))
         if binary:
             mask[mask != 0] = 255.0
-        mask = np.divide(mask.astype(np.float32), 255.0)
-        mask = resize(mask, (img_h, img_w, 1), anti_aliasing=True).astype("float32")
+            mask = np.divide(mask.astype(np.float32), 255.0)
+            mask = resize(mask, (img_h, img_w, 1), order=0, anti_aliasing=False).astype(
+                "float32"
+            )
+        else:
+            mask = resize(mask, (img_h, img_w), order=0, anti_aliasing=False).astype(
+                "float32"
+            )
+            unique_labels = np.unique(mask)
+            n_classes = 3
+            value_mapping = {label: idx for idx, label in enumerate(unique_labels)}
+            mask = np.vectorize(lambda x: value_mapping.get(x, x))(mask)
+            mask = to_categorical(mask, num_classes=n_classes)
+        if i % 1000 == 0:
+            print(f"{i}/{len(img_list)}")
 
         images.append(img)
         masks.append(mask)
