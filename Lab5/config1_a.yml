@@ -38,5 +38,5 @@ net:
   dropout_rate: 0.2
   normalization: True
   output_layers: 1
-  step_per_epoch: 10
-  validation_step: 10
+  step_per_epoch: 500
+  validation_step: 200

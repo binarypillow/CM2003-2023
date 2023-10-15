@@ -2,18 +2,13 @@ import os
 import sys
 import yaml
 import pickle
-import numpy as np
-import tensorflow as tf
-from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-
 
 # remove message about instructions in performance-critical operations: AVX2 FMA
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
 
 sys.path.append("../")
-from utils import Models, DataLoader, CompileFit, Plots
+from utils import Models, DataLoader, CompileFit, Plots, LossMetrics
 
 with open(sys.argv[1], "r") as ymlfile:
     config = yaml.safe_load(ymlfile)
@@ -37,21 +32,14 @@ net = config["net"]
 generator = config["generator"]
 
 if net["loss"] == "dice_loss":
-    loss = [CompileFit.dice_loss]
+    loss = [LossMetrics.dice_loss]
 else:
     loss = net["loss"]
-"""       
-else: 
-    dice_loss = sm.losses.DiceLoss() 
-    focal_loss = sm.losses.CategoricalFocalLoss()
-    total_loss = dice_loss + (1 * focal_loss)
-    loss = [dice_loss, focal_loss, total_loss]
-"""
 
 if net["metrics"] == "dice_coeff":
-    metrics = [CompileFit.dice_coeff]
+    metrics = [LossMetrics.dice_coeff]
 elif "dice_coeff" in net["metrics"]:
-    metrics = [CompileFit.dice_coeff]
+    metrics = [LossMetrics.dice_coeff]
     for i in range(1, len(net["metrics"])):
         metrics.append(net["metrics"][i])
 else:
@@ -230,14 +218,16 @@ model.load_weights(f"results/{task_name}/cp{iter_name}.ckpt")
 if net["metrics"] == "dice_coeff":
     Plots.plotLossAccuracy(history, task_name, metric="dice_coeff")
 elif "dice_coeff" in net["metrics"]:
-    Plots.plotLossAccuracy(history, task_name, f"{iter_name}_Dice", metric="dice_coeff")
+    Plots.plotLossAccuracy(
+        history, task_name, f"{iter_name}_Dice", metric=["dice_coeff"]
+    )
     for i in range(1, len(metrics)):
         curr_metric = metrics[i]
         Plots.plotLossAccuracy(
-            history, task_name, f"{iter_name}_{curr_metric}", metric=curr_metric
+            history, task_name, f"{iter_name}_{curr_metric}", metric=[curr_metric]
         )
 else:
-    Plots.plotLossAccuracy(history, task_name, metric=metrics)
+    Plots.plotLossAccuracy(history, task_name, metric=[metrics])
 
 # representation of image segmentation
 sample_img_path = f"{img_data_path}/{config['sample']}"
