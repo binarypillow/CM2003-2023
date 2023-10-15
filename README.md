@@ -12,6 +12,5 @@ Repository of Group_3 projects.
 - [Lab2](/Lab2/README.md)
 - [Lab3](/Lab3/README.md)
 - [Lab4](/Lab4/README.md)
-- Lab5
-- Lab6
+- [Lab5](/Lab5/README.md)
 - FinalProject
