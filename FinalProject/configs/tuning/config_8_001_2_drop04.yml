@@ -1,0 +1,42 @@
+task_name: tuning
+iter_name: model_8_001_2_drop04
+img_data_path: data/train/training_images
+mask_data_path: data/train/training_masks
+img_test_data_path: data/test
+n_folds: 5
+data:
+  img_ch: 1
+  img_w: 768
+  img_h: 768
+net:
+  net_model: UNet
+  base: 8
+  loss: dice_loss
+  optimizer: Adam
+  metrics:
+  - dice_coeff_multilabel
+  - dice_coeff_arteries
+  - dice_coeff_veins
+  - jaccard_coeff_multilabel
+  - jaccard_coeff_arteries
+  - jaccard_coeff_veins
+  n_epoch: 300
+  batch_s: 2
+  learning_rate: 0.001
+  dropout: true
+  dropout_rate: 0.4
+  normalization: false
+  output_layers: 3
+mean_metrics:
+  Mean val_dice_coeff_multilabel: 0.43940703868865966
+  Std val_dice_coeff_multilabel: 0.14674042292048967
+  Mean val_dice_coeff_arteries: 0.2891261473298073
+  Std val_dice_coeff_arteries: 0.22593145918401486
+  Mean val_dice_coeff_veins: 0.5991895198822021
+  Std val_dice_coeff_veins: 0.07582948311888274
+  Mean val_jaccard_coeff_multilabel: 0.31418139934539796
+  Std val_jaccard_coeff_multilabel: 0.12378372097360514
+  Mean val_jaccard_coeff_arteries: 0.19795721843838693
+  Std val_jaccard_coeff_arteries: 0.17544974758400259
+  Mean val_jaccard_coeff_veins: 0.4367367148399353
+  Std val_jaccard_coeff_veins: 0.08035376107432195

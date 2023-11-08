@@ -1,0 +1,54 @@
+task_name: testing
+iter_name: 10crop640x640_tra
+img_data_path: data/train/training_images
+mask_data_path: data/train/training_masks
+img_test_data_path: data/test
+use_random_crop: true
+n_crops: 10
+use_transfer: true
+use_LR_scheduler: true
+data:
+  img_ch: 1
+  img_w: 768
+  img_h: 768
+  img_w_crop: 640
+  img_h_crop: 640
+net:
+  net_model: UNet
+  base: 64
+  loss: dice_loss
+  optimizer: Adam
+  metrics:
+  - dice_coeff_multilabel
+  - dice_coeff_arteries
+  - dice_coeff_veins
+  - jaccard_coeff_multilabel
+  - jaccard_coeff_arteries
+  - jaccard_coeff_veins
+  n_epoch: 300
+  batch_s: 2
+  learning_rate: 0.001
+  dropout: true
+  dropout_rate: 0.2
+  normalization: true
+  output_layers: 3
+best_metrics:
+  Max val_dice_coeff_multilabel: 0.9813679456710815
+  Max val_dice_coeff_arteries: 0.9821747541427612
+  Max val_dice_coeff_veins: 0.9808042049407959
+  Max val_jaccard_coeff_multilabel: 0.9636098742485046
+  Max val_jaccard_coeff_arteries: 0.9651981592178345
+  Max val_jaccard_coeff_veins: 0.9625146389007568
+results:
+  Mean dice_coeff_multilabel: 0.9562007784843445
+  Std dice_coeff_multilabel: 0.020770881325006485
+  Mean dice_coeff_arteries: 0.9553772211074829
+  Std dice_coeff_arteries: 0.022579219192266464
+  Mean dice_coeff_veins: 0.9570244550704956
+  Std dice_coeff_veins: 0.020657159388065338
+  Mean jaccard_coeff_multilabel: 0.916872501373291
+  Std jaccard_coeff_multilabel: 0.03670928254723549
+  Mean jaccard_coeff_arteries: 0.9154298305511475
+  Std jaccard_coeff_arteries: 0.03994446620345116
+  Mean jaccard_coeff_veins: 0.9183152914047241
+  Std jaccard_coeff_veins: 0.036624182015657425
