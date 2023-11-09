@@ -113,6 +113,8 @@ The learning curve, dice score and jaccard score curve for the 5 folds of the be
 
 ## 6. Results
 
+⚠️ For all subsequent trainings, we used also a learning scheduler that halves the initial learning rate every 100 epochs.
+
 ### 6.1 Tuned model
 
 The best model found with fine tuning is the U-Net with dropout layer and batch normalization with the following parameters.
